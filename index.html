@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rota Analytics</title>
+  <meta name="description" content="Painel interativo de devoluções logísticas: comparação anual, top 5 motivos, motoristas e colaboradores, custo e tempo de resolução.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e6e85'/%3E%3Cpath d='M7 21h12V11H7zM19 14h4l3 3v4h-7z' fill='none' stroke='%23e3f2f6' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='11' cy='22' r='2' fill='%23e3f2f6'/%3E%3Ccircle cx='22' cy='22' r='2' fill='%23e3f2f6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Aplica o tema antes de pintar, para não piscar. ?tema=light|dark força, útil para testes.
+    try { var q = new URLSearchParams(location.search).get('tema'); var t = q || localStorage.getItem('tema'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
+</head>
+<body>
+
+<div class="app">
+  <aside class="menu" id="menu" aria-label="Menu principal">
+    <div class="marca">
+      <svg class="marca-icone" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="9" fill="currentColor"/>
+        <path d="M7 21h12V11H7zM19 14h4l3 3v4h-7z" fill="none" stroke="var(--menu-fundo)" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="11" cy="22" r="2" fill="var(--menu-fundo)"/>
+        <circle cx="22" cy="22" r="2" fill="var(--menu-fundo)"/>
+      </svg>
+      <span class="marca-texto"><b>Rota</b> Analytics</span>
+    </div>
+
+    <nav>
+      <p class="menu-grupo">Logística</p>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-4H4zM14 7h6V4h-6z"/></svg><span>Visão geral</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 7h12v10H2zM14 10h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>Entregas</span></a>
+      <a href="#" class="ativo" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-3"/></svg><span>Devoluções</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Motoristas</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M9 21v-6h6v6"/></svg><span>Centros de distribuição</span></a>
+
+      <p class="menu-grupo">Gestão</p>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h8M9 17h6"/></svg><span>Relatórios</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>Metas</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>Configurações</span></a>
+    </nav>
+
+    <div class="menu-rodape">
+      <span class="avatar" aria-hidden="true">ML</span>
+      <span class="usuario"><b>Marina Lopes</b><small>Coordenadora de logística</small></span>
+    </div>
+  </aside>
+  <div class="menu-fundo-mobile" id="menu-fundo" hidden></div>
+
+  <div class="conteudo">
+    <header class="topo">
+      <button class="botao-icone botao-menu" id="botao-menu" type="button" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="topo-titulo">
+        <p class="trilha">Logística / Devoluções</p>
+        <h1>Painel de devoluções</h1>
+      </div>
+      <button class="botao-icone" id="botao-tema" type="button" aria-label="Alternar tema claro e escuro">
+        <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg>
+        <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </header>
+
+    <section class="filtros" aria-label="Filtros">
+      <div class="filtro">
+        <label for="f-periodo">Período</label>
+        <select id="f-periodo">
+          <option value="2026-01|2026-09">Jan a set 2026</option>
+          <option value="2026-07|2026-09">3º trimestre 2026</option>
+          <option value="2026-01|2026-06">1º semestre 2026</option>
+          <option value="2025-01|2025-12">Ano de 2025</option>
+          <option value="2025-01|2026-09">Todo o período</option>
+        </select>
+      </div>
+      <div class="filtro">
+        <label for="f-cd">Centro de distribuição</label>
+        <select id="f-cd"></select>
+      </div>
+      <div class="filtro">
+        <label for="f-motivo">Motivo</label>
+        <select id="f-motivo"></select>
+      </div>
+      <button class="botao-limpar" id="botao-limpar" type="button">Limpar filtros</button>
+    </section>
+    <p class="comparacao" id="comparacao" aria-live="polite"></p>
+
+    <main class="painel">
+      <section class="indicadores" id="indicadores" aria-label="Indicadores"></section>
+
+      <h2 class="secao-titulo">Devoluções</h2>
+      <section class="cartao col-8">
+        <header class="cartao-topo">
+          <div><h3>Devoluções mês a mês</h3><p class="cartao-sub" id="sub-mensal"></p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-mensal">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-mensal" role="img" aria-label="Linhas de devoluções por mês contra o ano anterior"></div>
+        <div class="tabela-wrap" data-tabela="g-mensal" hidden></div>
+      </section>
+
+      <section class="cartao col-4">
+        <header class="cartao-topo">
+          <div><h3>Top 5 motivos</h3><p class="cartao-sub" id="sub-motivos"></p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-motivos">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-motivos" role="img" aria-label="Os 5 motivos de devolução mais frequentes"></div>
+        <div class="tabela-wrap" data-tabela="g-motivos" hidden></div>
+      </section>
+
+      <h2 class="secao-titulo">Equipe</h2>
+      <section class="cartao col-6">
+        <header class="cartao-topo">
+          <div><h3>Top 5 motoristas com mais devoluções</h3><p class="cartao-sub">Ao lado, a taxa sobre as entregas de cada um. Clique para filtrar.</p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-motoristas">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-motoristas" role="img" aria-label="Os 5 motoristas com mais devoluções"></div>
+        <div class="tabela-wrap" data-tabela="g-motoristas" hidden></div>
+      </section>
+
+      <section class="cartao col-6">
+        <header class="cartao-topo">
+          <div><h3>Top 5 colaboradores com mais devoluções</h3><p class="cartao-sub">Separação e conferência dos pedidos devolvidos. Clique para filtrar.</p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-colaboradores">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-colaboradores" role="img" aria-label="Os 5 colaboradores com mais devoluções"></div>
+        <div class="tabela-wrap" data-tabela="g-colaboradores" hidden></div>
+      </section>
+
+      <h2 class="secao-titulo">Operação</h2>
+      <section class="cartao col-6">
+        <header class="cartao-topo">
+          <div><h3>Taxa de devolução por centro</h3><p class="cartao-sub" id="sub-cds"></p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-cds">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-cds" role="img" aria-label="Taxa de devolução por centro de distribuição"></div>
+        <div class="tabela-wrap" data-tabela="g-cds" hidden></div>
+      </section>
+
+      <section class="cartao col-6">
+        <header class="cartao-topo">
+          <div><h3>Custo das devoluções por motivo</h3><p class="cartao-sub" id="sub-custo"></p></div>
+          <button class="botao-tabela" type="button" data-alvo="g-custo">Ver tabela</button>
+        </header>
+        <div class="grafico" id="g-custo" role="img" aria-label="Custo total das devoluções por motivo"></div>
+        <div class="tabela-wrap" data-tabela="g-custo" hidden></div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <p>Dados fictícios, gerados para demonstração. Empresa, nomes, menu e usuária são fictícios.</p>
+      <p>Desenvolvido por <a href="https://www.linkedin.com/in/deborah-dalonso-482099138" target="_blank" rel="noopener">Deborah Dalonso</a> · dados gerados em Python, painel em JavaScript com Apache ECharts.</p>
+    </footer>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
