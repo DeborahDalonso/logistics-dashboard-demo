@@ -381,7 +381,7 @@
   document.getElementById('botao-tema').addEventListener('click', function () {
     var novo = temaEscuro() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', novo);
-    try { localStorage.setItem('tema', novo); } catch (e) {}
+    try { localStorage.setItem('tema-rota-analytics', novo); } catch (e) {}
     if (D) atualizar();
   });
   var espera;
