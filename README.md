@@ -27,6 +27,6 @@ Painel interativo para acompanhar devoluções de uma operação de entregas: qu
 - **Paleta validada** para contraste e daltonismo nos dois temas.
 - **Página estática** no GitHub Pages.
 
-Empresa, nomes, menu e usuária são fictícios.
+Empresa, nomes e menu são fictícios.
 
 Desenvolvido por [Deborah Dalonso](https://www.linkedin.com/in/deborah-dalonso-482099138).
