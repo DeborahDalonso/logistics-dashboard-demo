@@ -376,18 +376,14 @@
   });
 
   // ---------- Tema ----------
-  function temaEscuro() {
-    var t = document.documentElement.getAttribute('data-theme');
-    if (t) return t === 'dark';
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
+  // O claro é o padrão: o escuro só entra quando a pessoa clica no botão de tema.
+  function temaEscuro() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
   document.getElementById('botao-tema').addEventListener('click', function () {
     var novo = temaEscuro() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', novo);
     try { localStorage.setItem('tema', novo); } catch (e) {}
     if (D) atualizar();
   });
-  if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { if (D) atualizar(); });
   var espera;
   window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(function () { Object.keys(graficos).forEach(function (k) { graficos[k].resize(); }); }, 120); });
 

@@ -1,5 +1,5 @@
 /* ============================================================
-   Identidade azul-petróleo. Cores por papel; o escuro tem passos próprios,
+   Identidade azul-petróleo. Cores por papel. O claro é o padrão; o escuro só entra pelo botão de tema e tem passos próprios,
    validados contra o próprio fundo (cereja x cinza, daltonismo ok).
    ============================================================ */
 :root {
@@ -33,34 +33,6 @@
   --sombra: 0 1px 2px rgba(10, 40, 50, 0.05), 0 8px 24px -16px rgba(10, 40, 50, 0.18);
   --raio: 14px;
   --fonte: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --pagina: #0b1114;
-    --superficie: #151b1e;
-    --superficie-2: #1c2428;
-    --tinta: #ecf3f5;
-    --tinta-2: #b5c6cb;
-    --tinta-muda: #82959b;
-    --grade: #253035;
-    --eixo: #36444a;
-    --borda: rgba(200, 235, 245, 0.09);
-    --marca: #1689a6;
-    --marca-forte: #5fc3dc;
-    --marca-suave: #123540;
-    --serie-ref: #a39b9e;
-    --seq-0: #16323b;
-    --seq-1: #9fdcec;
-    --bom: #34c26a;
-    --ruim: #f07a80;
-    --menu-fundo: #060c0e;
-    --menu-tinta: #dcebef;
-    --menu-tinta-2: #86a1a8;
-    --menu-ativo: rgba(22, 137, 166, 0.22);
-    --menu-acento: #5fc3dc;
-    --sombra: none;
-  }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
@@ -165,10 +137,6 @@ h1 { margin: 2px 0 0; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02
 .icone-sol { display: none; }
 :root[data-theme="dark"] .icone-sol { display: block; }
 :root[data-theme="dark"] .icone-lua { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .icone-sol { display: block; }
-  :root:not([data-theme="light"]) .icone-lua { display: none; }
-}
 
 /* Filtros: uma linha acima de tudo que eles afetam. */
 .filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; padding-top: 18px; }
